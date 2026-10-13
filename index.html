@@ -1,83 +1,48 @@
-<!doctype html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#087f8c">
-<title>فرم کافی‌نت نوین (مسعودی)</title>
-<style>
-:root{--teal:#087f8c;--teal-dark:#05636d;--bg:#f1f7f8;--ink:#17333a;--muted:#5e7479;--line:#d8e5e7;--white:#fff;--orange:#fff3d9}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e8f5f6 0,#f7fafb 260px);font-family:Tahoma,Arial,sans-serif;color:var(--ink);line-height:1.9;font-size:16px}
-.wrap{max-width:760px;margin:24px auto;padding:0 14px 40px}.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 8px 24px #17434a0b}
-.notice{border-right:5px solid #e0a12b;background:var(--orange);padding:16px 18px;border-radius:12px}.notice h2{font-size:18px;margin:0 0 6px;color:#805711}.notice p{margin:4px 0}.brand{text-align:center;background:var(--teal);color:white;border-radius:18px;padding:22px 16px}.brand h1{margin:0;font-size:27px}.brand p{margin:5px 0 0;color:#e1fbfc}.pill{display:inline-block;background:#ffffff20;border:1px solid #ffffff60;padding:3px 12px;border-radius:999px;margin-top:10px;font-size:13px}
-h2{font-size:20px;margin:0 0 12px;color:var(--teal-dark)}.muted{color:var(--muted);font-size:14px}.code{font-size:27px;font-weight:bold;letter-spacing:1px;direction:ltr;display:inline-block;color:var(--teal-dark);background:#eaf7f8;border:1px dashed #8ac7cd;border-radius:10px;padding:5px 16px;margin:5px 0 10px}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:bold;cursor:pointer;display:inline-flex;justify-content:center;align-items:center;text-decoration:none}.primary{background:var(--teal);color:white}.primary:hover{background:var(--teal-dark)}.secondary{background:#e8f3f4;color:var(--teal-dark)}.full{width:100%;margin-top:12px}.contact{background:#e9f8ee;color:#17643b;border:1px solid #bde5ca;padding:14px;border-radius:12px;overflow-wrap:anywhere}.contact a{color:#17643b;font-weight:bold}
-label{display:block;font-weight:bold;margin:12px 0 5px}input{width:100%;border:1px solid #cbdcde;border-radius:10px;padding:12px;font:inherit;background:#fcfefe;color:var(--ink)}input:focus{outline:2px solid #93d4da;border-color:var(--teal)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.status{display:none;margin-top:14px;padding:14px;border-radius:12px;background:#e9f8ee;border:1px solid #bde5ca}.status.show{display:block}.status p{margin:0 0 8px}.small{font-size:13px;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:13px;padding:8px}
-@media(max-width:560px){.wrap{margin:12px auto}.card{padding:17px}.brand h1{font-size:23px}.field-grid{grid-template-columns:1fr}.code{font-size:24px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <section class="card notice" id="notice">
-    <h2>⚠️ توجه فرمایید</h2>
-    <p>این فرم توسط سرپرست خانوار یا با رضایت و نظارت ایشان تکمیل شود. پیش از ارسال، اطلاعات را با دقت بررسی کنید.</p>
-    <p>کافی‌نت نوین مسئول تأیید اطلاعات واردشده یا نتیجه درخواست نیست. از وارد کردن اطلاعات دیگران بدون اجازه خودداری کنید.</p>
-    <button class="btn secondary" type="button" onclick="document.getElementById('notice').style.display='none'">متوجه شدم</button>
-  </section>
+try {
+    const response = await fetch(
+      'https://novin-rubika-bot.zahrasharifi1405roza.workers.dev/submit',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: name,
+          nationalId,
+          mobile,
+          postalCode,
+          consent: true
+        })
+      }
+    );
 
-  <header class="card brand">
-    <h1>کافی‌نت نوین (مسعودی)</h1>
-    <p>فرم خوداظهاری افزایش کالابرگ</p>
-    <span class="pill">خدمات اینترنتی و ثبت اطلاعات</span>
-  </header>
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error('پاسخ نامعتبر از سرور');
+    }
 
-  <section class="card">
-    <h2>📌 راهنمای دریافت کد</h2>
-    <p>برای دریافت کد، شماره زیر را در شماره‌گیر تلفن سرپرست خانوار وارد کنید:</p>
-    <div class="code">*4*40#</div>
-    <div class="row"><button class="btn secondary" type="button" onclick="copyText('*4*40#','کد دستوری کپی شد.')">کپی کد</button></div>
-    <p class="muted">پیش از شماره‌گیری، از معتبر و به‌روز بودن کد و دستورالعمل مربوطه اطمینان حاصل کنید.</p>
-  </section>
+    if (!response.ok || data.success !== true) {
+      throw new Error(data.error || 'ارسال ناموفق بود');
+    }
 
-  <section class="card">
-    <h2>📞 اطلاعات کافی‌نت</h2>
-    <p><strong>شماره تماس:</strong> <span dir="ltr">09136329759</span></p>
-    <p><strong>آدرس:</strong> روستای سلطان‌آباد، خیابان امام خمینی</p>
-    <div class="row">
-      <button class="btn secondary" type="button" onclick="copyText('09136329759','شماره تماس کپی شد.')">کپی شماره تماس</button>
-      <a class="btn secondary" href="tel:09136329759">تماس با کافی‌نت</a>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>📝 اطلاعات فردی سرپرست خانوار</h2>
-    <p class="muted">اطلاعات را فقط با اجازه سرپرست خانوار وارد کنید. این صفحه اطلاعات را روی سرور ذخیره نمی‌کند؛ پس از آماده‌سازی، متن برای ارسال دستی کپی می‌شود.</p>
-    <form id="infoForm">
-      <div class="field-grid">
-        <div><label for="fullname">نام و نام خانوادگی</label><input id="fullname" name="fullname" autocomplete="name" required maxlength="100" placeholder="نام کامل سرپرست خانوار"></div>
-        <div><label for="national">کد ملی</label><input id="national" name="national" inputmode="numeric" autocomplete="off" required minlength="10" maxlength="10" pattern="[0-9۰-۹]{10}" placeholder="۱۰ رقم"></div>
-        <div><label for="mobile">شماره موبایل (به نام سرپرست)</label><input id="mobile" name="mobile" inputmode="tel" autocomplete="tel" required maxlength="11" pattern="09[0-9۰-۹]{9}" placeholder="09xxxxxxxxx"></div>
-        <div><label for="postal">کد پستی محل سکونت</label><input id="postal" name="postal" inputmode="numeric" autocomplete="off" required minlength="10" maxlength="10" pattern="[0-9۰-۹]{10}" placeholder="۱۰ رقم"></div>
-      </div>
-      <label style="display:flex;gap:9px;align-items:flex-start;font-weight:normal;margin-top:16px"><input type="checkbox" id="consent" required style="width:auto;margin-top:8px;flex:0 0 auto">تأیید می‌کنم اطلاعات متعلق به خودم/با اجازه سرپرست خانوار است و پیش از ارسال آن را بررسی کرده‌ام.</label>
-      <button class="btn primary full" type="submit">آماده‌سازی اطلاعات برای ارسال</button>
-    </form>
-    <div class="status" id="result" aria-live="polite">
-      <p><strong>✅ متن اطلاعات آماده شد.</strong></p>
-      <p>برای حفظ حریم خصوصی، اطلاعات به‌صورت خودکار ارسال نمی‌شود. متن را کپی کنید، سپس وارد روبیکا شوید و در گفت‌وگوی کافی‌نت آن را فقط در صورت تمایل ارسال کنید.</p>
-      <button class="btn primary" type="button" id="copyDetails">کپی اطلاعات فرم</button>
-      <a class="btn secondary" href="https://rubika.ir/majid75Z" target="_blank" rel="noopener noreferrer">باز کردن روبیکا @majid75Z</a>
-      <p class="small" style="margin-top:10px">پس از باز شدن روبیکا، متن کپی‌شده را در پیام جای‌گذاری کنید و قبل از ارسال دوباره بررسی کنید.</p>
-    </div>
-  </section>
-  <footer>کافی‌نت نوین (مسعودی) · سلطان‌آباد، خیابان امام خمینی</footer>
-</div>
-<script>
-let preparedText='';
-function normalizeDigits(s){return s.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));}
-async function copyText(text,message){try{await navigator.clipboard.writeText(text)}catch(e){const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()} alert(message)}
-document.getElementById('infoForm').addEventListener('submit',function(e){e.preventDefault();const f=document.getElementById('fullname').value.trim();const n=normalizeDigits(document.getElementById('national').value.trim());const m=normalizeDigits(document.getElementById('mobile').value.trim());const p=normalizeDigits(document.getElementById('postal').value.trim());if(!/^[0-9]{10}$/.test(n)){alert('کد ملی باید ۱۰ رقم باشد.');return}if(!/^09[0-9]{9}$/.test(m)){alert('شماره موبایل باید با 09 شروع شود و ۱۱ رقم باشد.');return}if(!/^[0-9]{10}$/.test(p)){alert('کد پستی باید ۱۰ رقم باشد.');return}if(!document.getElementById('consent').checked){alert('لطفاً تأیید رضایت را علامت بزنید.');return}preparedText='فرم خوداظهاری افزایش کالابرگ\nکافی‌نت نوین (مسعودی)\n\nنام و نام خانوادگی: '+f+'\nکد ملی: '+n+'\nشماره موبایل سرپرست: '+m+'\nکد پستی: '+p+'\n\nلطفاً اطلاعات را بررسی فرمایید.';document.getElementById('result').classList.add('show');document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});});
-document.getElementById('copyDetails').addEventListener('click',()=>copyText(preparedText,'اطلاعات فرم کپی شد. حالا می‌توانید آن را در گفت‌وگوی روبیکا جای‌گذاری کنید.'));
+    const heading = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = '✅ اطلاعات به ربات ارسال شد.';
+    heading.appendChild(strong);
+    const note = document.createElement('p');
+    note.textContent = 'برای اطمینان، دریافت پیام را در گفت‌وگوی خصوصی ربات بررسی کنید.';
+    resultBox.append(heading, note);
+    resultBox.classList.add('show');
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } catch (error) {
+    resultBox.textContent = 'ارسال انجام نشد. اتصال ربات و تنظیمات سرور را بررسی کنید؛ اطلاعات را دوباره فقط پس از اطمینان از اتصال ارسال کنید.';
+    resultBox.classList.add('show');
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } finally {
+    button.disabled = false;
+    button.textContent = 'ارسال اطلاعات';
+  }
+});
 </script>
 </body>
 </html>
